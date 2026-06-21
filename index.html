@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #ffdde1;
+  overflow: hidden;
+}
+
+/* CURTAIN */
+.curtain {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(#ff4d6d, #ff99aa);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: transform 1s ease;
+}
+
+.curtain h1 {
+  color: white;
+  font-size: 28px;
+  text-align: center;
+}
+
+.hint {
+  color: white;
+  opacity: 0.8;
+  margin-top: 10px;
+}
+
+/* MAIN PAGE */
+.main {
+  display: none;
+  padding: 30px;
+  text-align: center;
+}
+
+/* NOTIFICATION (bottom-right like laptop) */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  padding: 15px 18px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: none;
+  cursor: pointer;
+  animation: pop 0.5s ease;
+}
+
+@keyframes pop {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO -->
+<audio id="bgm" loop>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
+
+<!-- CURTAIN -->
+<div class="curtain" id="curtain">
+  <h1>Hello My Love ❤️</h1>
+  <div class="hint">Swipe / Drag up to open</div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+  <h2>Happy Birthday ❤️</h2>
+  <p style="max-width:600px;margin:auto;font-size:18px;line-height:1.6;">
+    From the moment I met you, everything in my world started to feel softer, brighter, and more meaningful. 
+    Today is not just your birthday — it’s the day someone truly special came into this world and made it better just by existing.
+    <br><br>
+    I hope every smile you give comes back to you ten times stronger, and every dream you have slowly becomes reality.
+    No matter how far we are or what happens in life, I’ll always be proud of you, always support you, and always care about you more than words can fully explain.
+    <br><br>
+    You are my favorite person, my comfort, and my happiest thought.
+    Happy Birthday again, my love ❤️
+  </p>
+</div>
+
+<!-- NOTIFICATION -->
+<div class="notification" id="notif">
+  🎉 Happy Birthday! Click to open your surprise
+</div>
+
+<script>
+let curtain = document.getElementById("curtain");
+let main = document.getElementById("main");
+let notif = document.getElementById("notif");
+let bgm = document.getElementById("bgm");
+
+let opened = false;
+
+/* CURTAIN OPEN (drag or click) */
+function openCurtain() {
+  if (opened) return;
+  opened = true;
+
+  curtain.style.transform = "translateY(-100%)";
+
+  setTimeout(() => {
+    main.style.display = "block";
+    notif.style.display = "block";
+  }, 1000);
+
+  // music starts AFTER interaction (fix autoplay issue)
+  bgm.play().catch(() => {
+    console.log("Autoplay blocked until user interacts");
+  });
+}
+
+/* click or swipe */
+curtain.addEventListener("click", openCurtain);
+
+/* simple swipe up */
+let startY = 0;
+curtain.addEventListener("touchstart", e => {
+  startY = e.touches[0].clientY;
+});
+
+curtain.addEventListener("touchend", e => {
+  let endY = e.changedTouches[0].clientY;
+  if (startY - endY > 50) {
+    openCurtain();
+  }
+});
+
+/* NOTIFICATION CLICK */
+notif.addEventListener("click", () => {
+  notif.style.display = "none";
+  alert("💖 Surprise unlocked!");
+});
+</script>
+
+</body>
+</html>
